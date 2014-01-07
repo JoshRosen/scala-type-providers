@@ -10,4 +10,14 @@ class Tests extends FunSuite {
     assert(users.name.table === users)
     assert(users.age.table === users)
   }
+
+  test("tableAnnotation") {
+    @tableAnnotation(Col[String]("name"), Col[Int]("age")) object Users {}
+    assert(Users.isInstanceOf[Table[(String, Int)]])
+    assert(Users.name.isInstanceOf[ColImpl[String]])
+    assert(Users.age.isInstanceOf[ColImpl[Int]])
+    // Check that the columns reference their table:
+    assert(Users.name.table === Users)
+    assert(Users.age.table === Users)
+  }
 }
